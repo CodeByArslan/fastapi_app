@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FastAPI Form</title>
+</head>
+<body>
+  <h1>Add Item</h1>
+  <form id="itemForm">
+    <input type="text" name="name" placeholder="Name" required />
+    <input type="text" name="description" placeholder="Description" required />
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Items</h2>
+  <ul id="itemsList"></ul>
+
+  <script>
+    const form = document.getElementById('itemForm');
+    const list = document.getElementById('itemsList');
+
+    async function fetchItems() {
+      const res = await fetch('/items/');
+      const items = await res.json();
+      list.innerHTML = '';
+      items.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name}: ${item.description}`;
+        list.appendChild(li);
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const name = formData.get('name');
+      const description = formData.get('description');
+
+      await fetch(`/items/?name=${name}&description=${description}`, {
+        method: 'POST'
+      });
+
+      form.reset();
+      fetchItems();
+    });
+
+    fetchItems();
+  </script>
+</body>
+</html>

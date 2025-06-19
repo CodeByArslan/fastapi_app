@@ -3,10 +3,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Hard-coded DATABASE_URL for Railway deployment
-DATABASE_URL = "postgresql://db1_owner:npg_WlQ4rvq3bUkH@ep-noisy-frost-a8xb9ut4-pooler.eastus2.azure.neon.tech/db1?sslmode=require"
+# Get DATABASE_URL from environment variable
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-print("Connecting to Neon database...")  # Log for debugging
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set")
+
+print(f"Connecting to database: {DATABASE_URL.split('@')[1].split('/')[0] if '@' in DATABASE_URL else 'unknown'}...")  # Log host for debugging
 
 # Create engine with proper configuration for production
 engine = create_engine(

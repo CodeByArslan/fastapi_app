@@ -3,13 +3,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Get DB URL from environment with validation
-DATABASE_URL = os.getenv("DATABASE_URL")
+# Hard-coded DATABASE_URL for Railway deployment
+DATABASE_URL = "postgresql://neondb_owner:npg_o1l9fOGsSAVH@ep-lingering-morning-a8d52lpo-pooler.eastus2.azure.neon.tech/testdb?sslmode=require"
 
-if not DATABASE_URL:
-    raise ValueError("DATABASE_URL environment variable is not set")
-
-print(f"Connecting to database: {DATABASE_URL[:20]}...")  # Log first 20 chars for debugging
+print("Connecting to Neon database...")  # Log for debugging
 
 # Create engine with proper configuration for production
 engine = create_engine(
@@ -17,7 +14,7 @@ engine = create_engine(
     echo=True,
     pool_pre_ping=True,  # Validate connections before use
     pool_recycle=300,    # Recycle connections every 5 minutes
-    connect_args={"sslmode": "require"} if "postgresql" in DATABASE_URL else {}
+    connect_args={"sslmode": "require"}
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

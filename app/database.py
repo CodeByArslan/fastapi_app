@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # Hard-coded DATABASE_URL for Railway deployment
-DATABASE_URL = "postgresql://neondb_owner:npg_o1l9fOGsSAVH@ep-lingering-morning-a8d52lpo-pooler.eastus2.azure.neon.tech/testdb?sslmode=require"
+DATABASE_URL = "postgresql://db1_owner:npg_WlQ4rvq3bUkH@ep-noisy-frost-a8xb9ut4-pooler.eastus2.azure.neon.tech/db1?sslmode=require"
 
 print("Connecting to Neon database...")  # Log for debugging
 
